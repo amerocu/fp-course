@@ -212,4 +212,4 @@ isHappy ::
 isHappy num = contains 1 . firstRepeat $ produce sumOfSquare num
 
 sumOfSquare :: Integer -> Integer
-sumOfSquare num =  toInteger . sum . map (\x y -> x * y) . digitToInt ) . show' $ num
+sumOfSquare = toInteger . sum . map ((\x -> x * x) . digitToInt ) . show'
