@@ -33,8 +33,7 @@ instance Extend ExactlyOne where
     (ExactlyOne a -> b)
     -> ExactlyOne a
     -> ExactlyOne b
-  (<<=) =
-    error "todo: Course.Extend (<<=)#instance ExactlyOne"
+  (<<=) f oa = ExactlyOne $ f oa
 
 -- | Implement the @Extend@ instance for @List@.
 --
@@ -51,8 +50,8 @@ instance Extend List where
     (List a -> b)
     -> List a
     -> List b
-  (<<=) =
-    error "todo: Course.Extend (<<=)#instance List"
+  (<<=) _ Nil         =  Nil
+  (<<=) f a@(_ :. as) = f a :. (f <<= as)
 
 -- | Implement the @Extend@ instance for @Optional@.
 --
@@ -66,8 +65,9 @@ instance Extend Optional where
     (Optional a -> b)
     -> Optional a
     -> Optional b
-  (<<=) =
-    error "todo: Course.Extend (<<=)#instance Optional"
+  (<<=) f a = case a of
+                Full _ -> Full $ f a
+                Empty  -> Empty
 
 -- | Duplicate the functor using extension.
 --
@@ -86,5 +86,4 @@ cojoin ::
   Extend f =>
   f a
   -> f (f a)
-cojoin =
-  error "todo: Course.Extend#cojoin"
+cojoin = (<<=) id
